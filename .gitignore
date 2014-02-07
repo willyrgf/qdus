@@ -1,0 +1,5 @@
+# arquivos que seram ignorados
+
+executeAll.sh
+qdus.sublime-project
+qdus.sublime-workspace

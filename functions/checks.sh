@@ -73,7 +73,7 @@ _checkOS()
 # Argumentos:
 # 	As dependencias a serem checadas
 # Retornos:
-# 	$os
+# 	Mensagem na tela dizendo se existe ou nao a dependencia.
 #############################################################################
 
 _checkDependencies()
@@ -112,7 +112,7 @@ _checkDependencies()
 _installDependencies()
 {
 	if [[ -e ${packageManager[0]} ]]; then
-		trueOrFalse=0
+		local trueOrFalse=0
 
 		while [[ trueOrFalse -eq 0 ]]; do
 			_print "Deseja instalar as dependencias automaticamente? (y/N): "
@@ -126,7 +126,12 @@ _installDependencies()
 					for dependence in ${nonPrograms[@]}; do
 						printf '%s %s %s\n' "${packageManager[@]}" "$dependence"
 						"${packageManager[@]}" "$dependence"
-						[[ $? -ne 0 ]] &&	_err "Nao foi possivel instalar $dependence.\n"; return 1
+
+						if [[ $? -ne 0 ]]; then
+							_err "Nao foi possivel instalar $dependence.\n"
+							return 1
+						fi
+						
 					done
 
 				else

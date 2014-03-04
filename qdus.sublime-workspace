@@ -7,33 +7,6 @@
 	},
 	"buffers":
 	[
-		{
-			"contents": "#!/usr/bin/env bash\n\n_verifyUser()\n{\n	if test $UID -ne 0\n	then\n		printf '\\nYou need access root for execute program.'\n	fi\n}\n\n_verifyOS()\n{\n	local os=\"`cat /etc/issue | head -n1 | cut -f1 -d' ' | tr A-Z a-z`\"\n	case \"$os\" in\n		debian )\n			printf 'debian\\n';;\n		centos )\n			printf 'centos\\n';;\n\n	esac\n}",
-			"file": "functions/verification.sh",
-			"file_size": 299,
-			"file_write_time": 130361131766988188,
-			"settings":
-			{
-				"buffer_size": 299,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "qdus.sh",
-			"settings":
-			{
-				"buffer_size": 946,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "executeAll.sh",
-			"settings":
-			{
-				"buffer_size": 403,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/Bash Build System/Bash.sublime-build",
 	"command_palette":
@@ -107,10 +80,11 @@
 	},
 	"file_history":
 	[
-		"/home/willy/Projetos/qdus/executeAll.sh",
-		"/home/willy/Projetos/qdus/.gitignore",
-		"/home/willy/Projetos/qdus/functions/verification.sh",
 		"/home/willy/Projetos/qdus/qdus.sh",
+		"/home/willy/Projetos/qdus/qdus.sublime-project",
+		"/home/willy/Projetos/qdus/executeAll.sh",
+		"/home/willy/Projetos/qdus/functions/verification.sh",
+		"/home/willy/Projetos/qdus/.gitignore",
 		"/home/willy/Projetos/qdus/LICENSE",
 		"/home/willy/projetos/fabricaDeServidores/main.sh",
 		"/home/willy/RWXIT/Projetos/fabricaDeServidores/imprime.fabricaDeServidores.sh",
@@ -180,93 +154,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "functions/verification.sh",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 299,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								167,
-								167
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "qdus.sh",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 946,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								876,
-								876
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "executeAll.sh",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 403,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								265,
-								265
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -329,11 +218,15 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"",
+				"~/.sublime/projetos/qdus.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{

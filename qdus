@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# QDUS -  QUICK DEPLOYMENT OF UNIX-LIKE SERVICES.
+
+# Author:  Willy Romao Goncalves Franca -  (willyr.goncalves (a) gmail.com)
+# Created: 2014-08-01
+# License: GPLv2
+# GitHub:  https://github.com/willyrgf/qdus
+
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#############################################################################
+# Nome da funcao: _main() 
+# Funcao principal do programa, usada para chamar as outras funcoes e 
+# executar todo o programa.
+# Variaveis Globais:
+# 	DIR_FUNC
+# 	DIR_CONFIG
+# Argumentos:
+# 	Nenhum
+# Retornos:
+# 	0 ou 1
+#############################################################################
+
+_main()
+{
+	# Variaveis globais
+	# Diretorio das funcoes
+	export DIR_FUNC="functions"
+	# Diretorio das configuracoes de cada distribuicao
+	export DIR_CONFIG="config"
+  # Diretorio onde sao gerados os logs
+  export DIR_LOG="/var/log/qdus"
+  # Cores utilizadas nas mensagens de saida
+  ESC_SEQ="\x1b["
+  COLOR_RESET=$ESC_SEQ"39;49;00m"
+  COLOR_RED=$ESC_SEQ"31;01m"
+  COLOR_GREEN=$ESC_SEQ"32;01m"
+
+  # Log que recebe tudo da stderr sem nenhum tipo de tratamento.
+  [[ -e $DIR_LOG ]] || mkdir -p $DIR_LOG
+  LOG_FULL="$DIR_LOG/full.log"
+  LOG_ERR="$DIR_LOG/err.log"
+
+	# Executa verificacoes primordiais para o funcionamento do programa.
+	source $DIR_FUNC/checks.sh
+  # Possui funcoes utilitarias e para melhor padronizacao do programa.
+  source $DIR_FUNC/utils.sh
+	
+	# Executando funcoes
+	# As especificacoes das funcoes estao no cabecalho de cada uma delas.
+	_checkUser || exit
+	_checkOS || exit
+
+	# Carrega as configuracoes para o sistema operacional e
+	# distribuicao usados.
+	source $DIR_CONFIG/$os/*.conf
+  _print "O sistema operacional eh o: $os $version\n"
+
+  # _checkDependencies "dialog" "gcc" "grep"
+  _checkDependencies "asqlog" "gqsqsdcc" "grepaadwad"
+  _installDependencies || exit
+  
+	return 0
+}
+
+_main $@

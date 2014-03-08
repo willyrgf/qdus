@@ -63,16 +63,22 @@ _main()
 	# Executando funcoes
 	# As especificacoes das funcoes estao no cabecalho de cada uma delas.
 	_checkUser || exit
-	_checkOS || exit
+  _checkOS || exit
+	_checkDistribution || exit
 
-	# Carrega as configuracoes para o sistema operacional e
+	# Se existir, carrega as configuracoes para o sistema operacional e
 	# distribuicao usados.
-	source $DIR_CONFIG/$os/*.conf
-  _print "O sistema operacional eh o: $os $version\n"
+  if [[ -e $DIR_CONFIG/"${dist}"/*.conf ]];then
+	  source $DIR_CONFIG/"${dist}"/*.conf
+  else
+    _err 'Nao existe arquivos de configuracao para a distribuicao utilizada.\n'
+  fi
+
+  _print "O sistema operacional eh o: "${dist}" $version\n"
 
   # _checkDependencies "dialog" "gcc" "grep"
   _checkDependencies "asqlog" "gqsqsdcc" "grepaadwad"
-  _installDependencies || exit
+  # _installDependencies || exit
   
 	return 0
 }

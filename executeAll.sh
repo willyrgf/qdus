@@ -3,7 +3,7 @@
 ## Funcao
 # Executar o projeto em todos os servidores de teste.
 
-ips=("192.168.7.211" "192.168.7.212")
+ips=("192.168.7.211" "192.168.7.212" "192.168.7.214")
 # comando="ps aux | grep -v grep | grep qdus | awk '{ print $2 }' | xargs kill -9; cd ~/qdus/; bash qdus"
 comando="cd ~/qdus/; bash qdus"
 reme="rm -rf /root/qdus"

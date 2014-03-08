@@ -35,7 +35,7 @@ _checkUser()
 
 #############################################################################
 # Nome da funcao: _checkOS()
-# Verifica a distribuicao utilizada para rodar o programa.
+# Verifica o sistema operacional utilizada para rodar o programa.
 # Variaveis Globais:
 # 	Nenhuma
 # Argumentos:
@@ -46,23 +46,50 @@ _checkUser()
 
 _checkOS()
 {
-	os="$(cat /etc/issue |
-		  head -n1 |
-		  cut -f1 -d' ' |
-		  tr A-Z a-z)"
+	os="$(uname | tr A-Z a-z)"
 
-	while read existingOS; do
+	if [[ "$os" = "freebsd" || "$os" = "linux" ]];then
+		export "$os"
+		return 0
+	else
+		_err 'O S.O. utilizado nao eh suportado pelo projeto QDUS.\n'
+		return 1
+	fi
+}
 
-		if [[ ${existingOS} = ${os} ]]; then
-			export "$os"
+#############################################################################
+# Nome da funcao: _checkDistribution()
+# Verifica a distribuicao utilizada para rodar o programa.
+# Variaveis Globais:
+# 	Nenhuma
+# Argumentos:
+# 	Nenhum
+# Retornos:
+# 	$dist
+#############################################################################
+
+_checkDistribution()
+{
+	if [[ "${os}" = linux ]];then
+		dist="$(cat /etc/*release | # arquivo que contem o nome da distribuicao.
+					 tr A-Z a-z | # troca de maiusculo para minusculo
+					 grep -Eo $(ls $DIR_CONFIG | # grep alimentado pelo retorno do ls
+					 					 	xargs | # tratamento para o sed
+					 					 	sed 's/ /|/g') | # troca os espacos por pipe(OU p/ o grep).
+					 head -n1)"
+
+		if [[ -n "${dist}" ]]; then
+			export "${dist}"
 			return 0
+		else
+			_err 'A distribuicao utilizada nao eh suportado pelo projeto QDUS.\n'
+			return 1
 		fi
+		
+	else
+		_err 'Nao ha distribuicao suportada para o seu S.O. pelo projeto QDUS.\n'
+	fi
 
-	done < <(ls $DIR_CONFIG)
-
-	_err 'O sistema operacional/distribuicao utilizado nao eh suportado\n'
-	_err 'pelo projeto QDUS.\n'
-	return 1
 }
 
 #############################################################################
@@ -95,6 +122,7 @@ _checkDependencies()
 
 	done
 
+	# todas as dependencias nao instaladas
 	export nonPrograms
 }
 
@@ -111,38 +139,49 @@ _checkDependencies()
 #############################################################################
 _installDependencies()
 {
+	# Se existe o diretorio do gerenciador de pacotes especificado.
 	if [[ -e ${packageManager[0]} ]]; then
+		# Flag utilizada para o while
 		local trueOrFalse=0
 
 		while [[ trueOrFalse -eq 0 ]]; do
 			_print "Deseja instalar as dependencias automaticamente? (y/N): "
+			# Entrada do usuario com y ou N.
 			read yN
 			_print "\n"
 
+			# Se a entrada for y ou N
 			if [[ "${yN}" = "y" || "${yN}" = "N" ]]; then
 
+				# Se estiver digitado "y"
 				if [[ "${yN}" = "y" ]]; then
-
+					# For para percorrer o array que tem todas as dependencias.
 					for dependence in ${nonPrograms[@]}; do
-						printf '%s %s %s\n' "${packageManager[@]}" "$dependence"
+						printf '%s %s %s %s\n' "${packageManager[@]}" "$dependence"
+						# ${packageManager[@]}: gerenciador de pacotes e
+						# argumento de instalacao. (Veja em $DIR_CONFIG/$os/*.conf)
+						# $dependence: dependencia a ser instalada.
 						"${packageManager[@]}" "$dependence"
 
 						if [[ $? -ne 0 ]]; then
 							_err "Nao foi possivel instalar $dependence.\n"
 							return 1
 						fi
-						
+
 					done
 
+				# Se estiver digitado "N"
 				else
 					_err "Resolva todas as dependecias para continuar a instalacao.\n"
 					return 1
 				fi
 
+				# Saida do while
 				trueOrFalse=1
 			fi
 
 		done
+
 	else
 		_err "Nao existe gerenciador de pacotes setado para sua distribuicao.\n"
 		return 1

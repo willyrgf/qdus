@@ -28,7 +28,7 @@
 _checkUser()
 {
 	if [[ $UID -ne 0 ]];then
-		_err 'Voce precisa ter acesso root para executar este programa.\n'
+		_err "[${COLOR_RED}WARNING${COLOR_RESET}] Voce precisa ter acesso root.\n"
 		return 1
 	fi
 }
@@ -115,7 +115,7 @@ _checkDependencies()
 
 		if [[ $? -ne 0 ]]; then
 			_print "$COLOR_RED[NAO]$COLOR_RESET.\n"
-			nonPrograms=("${nonPrograms[@]}" "$program")
+			non_programs=("${non_programs[@]}" "$program")
 		else
 			_print "$COLOR_GREEN[SIM]$COLOR_RESET.\n"
 		fi
@@ -123,7 +123,7 @@ _checkDependencies()
 	done
 
 	# todas as dependencias nao instaladas
-	export nonPrograms
+	export non_programs
 }
 
 #############################################################################
@@ -140,7 +140,7 @@ _checkDependencies()
 _installDependencies()
 {
 	# Se existe o diretorio do gerenciador de pacotes especificado.
-	if [[ -e ${packageManager[0]} ]]; then
+	if [[ -e ${package_manager[0]} ]]; then
 		# Flag utilizada para o while
 		local trueOrFalse=0
 
@@ -156,12 +156,12 @@ _installDependencies()
 				# Se estiver digitado "y"
 				if [[ "${yN}" = "y" ]]; then
 					# For para percorrer o array que tem todas as dependencias.
-					for dependence in ${nonPrograms[@]}; do
-						printf '%s %s %s %s\n' "${packageManager[@]}" "$dependence"
+					for dependence in ${non_programs[@]}; do
+						printf '%s %s %s %s\n' "${package_manager[@]}" "$dependence"
 						# ${packageManager[@]}: gerenciador de pacotes e
 						# argumento de instalacao. (Veja em $DIR_CONFIG/$os/*.conf)
 						# $dependence: dependencia a ser instalada.
-						"${packageManager[@]}" "$dependence"
+						"${package_manager[@]}" "$dependence"
 
 						if [[ $? -ne 0 ]]; then
 							_err "Nao foi possivel instalar $dependence.\n"

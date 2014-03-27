@@ -26,7 +26,8 @@
 # 	Nenhum
 #############################################################################
 
-_opening(){
+_opening()
+{
   clear
   cat <<EOT
 
@@ -46,6 +47,52 @@ EOT
 }
 
 #############################################################################
+# Nome da funcao: _menuServices
+# Menu principal do projeto.
+# Variaveis Globais:
+# 	Nenhuma
+# Argumentos:
+# 	Nenhum
+# Retornos:
+# 	Nenhum
+#############################################################################
+
+_menuServices()
+{
+  clear
+  cat <<EOT
+  
+  MENU DE INSTALACAO/IMPLEMENTACAO DE SERVICOS
+
+  Escolha o servico que deseja instalar/implementar:
+  
+  [ 1 ] - Apache/Httpd
+  [ 2 ] - OpenLDAP
+  [ 0 ] - Sair do programa.
+
+EOT
+  _print "Digite a opcao desejada: " 
+  read op
+  _print "\n"
+
+  case $op in
+    1)
+      echo "Ainda tenho como chamar o installApache"
+      ;;
+    2)
+      echo "Ainda tenho como chamar o OpenLDAP"
+      ;;
+    0)
+      return 1
+      ;;
+    *)
+      _menuServices
+      ;;
+  esac
+}
+
+
+#############################################################################
 # Nome da funcao: _mainMenu
 # Menu principal do projeto.
 # Variaveis Globais:
@@ -56,6 +103,33 @@ EOT
 # 	Nenhum
 #############################################################################
 
-#_mainMenu(){
-#
-#}
+_mainMenu()
+{
+  cat <<EOT
+  
+  MENU
+  
+  [ 1 ] - Instalar/Implemntar servicos.
+  [ 2 ] - Configurar servicos existentes.
+  [ 0 ] - Sair do programa.
+
+EOT
+  _print "Digite a opcao desejada: " 
+  read op
+  _print "\n"
+
+  case $op in
+    1)
+      _menuServices
+      ;;
+    2)
+      _menuConfServices
+      ;;
+    0)
+      return 1
+      ;;
+    *)
+      _mainMenu
+      ;;
+  esac
+}
